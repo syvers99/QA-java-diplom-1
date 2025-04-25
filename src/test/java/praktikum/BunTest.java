@@ -15,8 +15,13 @@ public class BunTest {
         bun = new Bun(MOZART,PRICE);}
 
     @Test
-    public void getBunTest() {
+    public void getPriceTest() {
         assertEquals(35.0f,bun.getPrice(),1);
+
+    }
+    @Test
+    public void getNameTest() {
         assertEquals("mozart",bun.getName());
     }
+
 }

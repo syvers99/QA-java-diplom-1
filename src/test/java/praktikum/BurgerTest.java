@@ -32,7 +32,7 @@ public class BurgerTest {
     }
 
     @Test
-    public void getBurgerTest()  {
+    public void getReceiptReverseTest()  {
         Mockito.when(bun.getPrice()).thenReturn(PRICE_BUN);
         Mockito.when(bun.getName()).thenReturn(MOZART);
         Mockito.when(ingredientOne.getPrice()).thenReturn(PRICE_BUN);
@@ -41,20 +41,8 @@ public class BurgerTest {
         Mockito.when(ingredientTwo.getPrice()).thenReturn(PRICE_INGREDIENT);
         Mockito.when(ingredientTwo.getName()).thenReturn(CHEESE);
         Mockito.when(ingredientTwo.getType()).thenReturn(IngredientType.FILLING);
-        burger.setBuns(bun);
         burger.addIngredient(ingredientOne);
         burger.addIngredient(ingredientTwo);
-        assertEquals(PRICE_BURGER,burger.getPrice(),1);
-        try {
-            System.out.println(SUCCESS);
-            data= "";
-            byte[] encoded = Files.readAllBytes(Paths.get(PATH_RECEIPT));
-            data = new String(encoded, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            System.out.println(ERROR);
-            e.printStackTrace();
-        }
-        assertEquals(data,burger.getReceipt());
         burger.removeIngredient(1);
         burger.addIngredient(ingredientTwo);
         burger.moveIngredient(0,1);
@@ -68,15 +56,53 @@ public class BurgerTest {
             e.printStackTrace();
         }
         assertEquals(dataReverse,burger.getReceipt());
-        Mockito.verify(bun, Mockito.times(3)).getPrice();
-        Mockito.verify(bun, Mockito.times(4)).getName();
-        Mockito.verify(ingredientOne, Mockito.times(2)).getName();
-        Mockito.verify(ingredientTwo, Mockito.times(2)).getName();
-        Mockito.verify(ingredientOne, Mockito.times(2)).getType();
-        Mockito.verify(ingredientTwo, Mockito.times(2)).getType();
-        Mockito.verify(ingredientOne, Mockito.times(3)).getPrice();
-        Mockito.verify(ingredientTwo, Mockito.times(3)).getPrice();
+    }
+
+    @Test
+    public void getPriceTest()  {
+        Mockito.when(bun.getPrice()).thenReturn(PRICE_BUN);
+        Mockito.when(ingredientOne.getPrice()).thenReturn(PRICE_BUN);
+        Mockito.when(ingredientTwo.getPrice()).thenReturn(PRICE_INGREDIENT);
+        burger.addIngredient(ingredientOne);
+        burger.addIngredient(ingredientTwo);
+        assertEquals(PRICE_BURGER,burger.getPrice(),1);
+        Mockito.verify(bun, Mockito.times(1)).getPrice();
+        Mockito.verify(ingredientOne, Mockito.times(1)).getPrice();
+        Mockito.verify(ingredientTwo, Mockito.times(1)).getPrice();
+    }
+
+    @Test
+    public void getReceiptTest()  {
+        Mockito.when(bun.getPrice()).thenReturn(PRICE_BUN);
+        Mockito.when(bun.getName()).thenReturn(MOZART);
+        Mockito.when(ingredientOne.getPrice()).thenReturn(PRICE_BUN);
+        Mockito.when(ingredientOne.getName()).thenReturn(WINE);
+        Mockito.when(ingredientOne.getType()).thenReturn(IngredientType.SAUCE);
+        Mockito.when(ingredientTwo.getPrice()).thenReturn(PRICE_INGREDIENT);
+        Mockito.when(ingredientTwo.getName()).thenReturn(CHEESE);
+        Mockito.when(ingredientTwo.getType()).thenReturn(IngredientType.FILLING);
+        burger.addIngredient(ingredientOne);
+        burger.addIngredient(ingredientTwo);
+        try {
+            System.out.println(SUCCESS);
+            data= "";
+            byte[] encoded = Files.readAllBytes(Paths.get(PATH_RECEIPT));
+            data = new String(encoded, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            System.out.println(ERROR);
+            e.printStackTrace();
+        }
+        assertEquals(data,burger.getReceipt());
+        Mockito.verify(bun, Mockito.times(1)).getPrice();
+        Mockito.verify(bun, Mockito.times(2)).getName();
+        Mockito.verify(ingredientOne, Mockito.times(1)).getName();
+        Mockito.verify(ingredientTwo, Mockito.times(1)).getName();
+        Mockito.verify(ingredientOne, Mockito.times(1)).getType();
+        Mockito.verify(ingredientTwo, Mockito.times(1)).getType();
+        Mockito.verify(ingredientOne, Mockito.times(1)).getPrice();
+        Mockito.verify(ingredientTwo, Mockito.times(1)).getPrice();
 
     }
+
 
 }
