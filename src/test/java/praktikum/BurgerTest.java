@@ -66,9 +66,6 @@ public class BurgerTest {
         burger.addIngredient(ingredientOne);
         burger.addIngredient(ingredientTwo);
         assertEquals(PRICE_BURGER,burger.getPrice(),1);
-        Mockito.verify(bun, Mockito.times(1)).getPrice();
-        Mockito.verify(ingredientOne, Mockito.times(1)).getPrice();
-        Mockito.verify(ingredientTwo, Mockito.times(1)).getPrice();
     }
 
     @Test
@@ -93,6 +90,34 @@ public class BurgerTest {
             e.printStackTrace();
         }
         assertEquals(data,burger.getReceipt());
+    }
+
+    @Test
+    public void verifyGetPriceTest()  {
+        Mockito.when(bun.getPrice()).thenReturn(PRICE_BUN);
+        Mockito.when(ingredientOne.getPrice()).thenReturn(PRICE_BUN);
+        Mockito.when(ingredientTwo.getPrice()).thenReturn(PRICE_INGREDIENT);
+        burger.addIngredient(ingredientOne);
+        burger.addIngredient(ingredientTwo);
+        burger.getPrice();
+        Mockito.verify(bun, Mockito.times(1)).getPrice();
+        Mockito.verify(ingredientOne, Mockito.times(1)).getPrice();
+        Mockito.verify(ingredientTwo, Mockito.times(1)).getPrice();
+    }
+
+    @Test
+    public void verifyGetReceiptTest()  {
+        Mockito.when(bun.getPrice()).thenReturn(PRICE_BUN);
+        Mockito.when(bun.getName()).thenReturn(MOZART);
+        Mockito.when(ingredientOne.getPrice()).thenReturn(PRICE_BUN);
+        Mockito.when(ingredientOne.getName()).thenReturn(WINE);
+        Mockito.when(ingredientOne.getType()).thenReturn(IngredientType.SAUCE);
+        Mockito.when(ingredientTwo.getPrice()).thenReturn(PRICE_INGREDIENT);
+        Mockito.when(ingredientTwo.getName()).thenReturn(CHEESE);
+        Mockito.when(ingredientTwo.getType()).thenReturn(IngredientType.FILLING);
+        burger.addIngredient(ingredientOne);
+        burger.addIngredient(ingredientTwo);
+        burger.getReceipt();
         Mockito.verify(bun, Mockito.times(1)).getPrice();
         Mockito.verify(bun, Mockito.times(2)).getName();
         Mockito.verify(ingredientOne, Mockito.times(1)).getName();
@@ -103,6 +128,7 @@ public class BurgerTest {
         Mockito.verify(ingredientTwo, Mockito.times(1)).getPrice();
 
     }
+
 
 
 }
